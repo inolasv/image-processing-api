@@ -4,8 +4,11 @@ import routes from './routes/index';
 const app = express();
 const port = 3000;
 
+
+
 // set view engine as ejs 
 app.set('view engine', 'ejs');
+app.use(express.static('assets'))
 
 // using main api route
 app.use('/api', routes);

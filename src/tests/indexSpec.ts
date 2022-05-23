@@ -24,14 +24,17 @@ describe("Server Test", () => {
 });
 
 describe('Resize Image Test', () => {
-    it ('creates new image', () => {
-        expect(resizeImage('encenadaport', 200, 200)).toBe("assets/thumb/encenadaport_thumb.jpg");
+    it ('creates new image', async () => {
+        const created_image = await resizeImage('encenadaport', 200, 200)
+        expect(created_image).toBe("./assets/thumb/encenadaport_thumb.jpg");
     })
-    it ('creates new image with proper dims', () => {
-        const new_image = resizeImage('encenadaport', 200, 200);
-        expect()
-        const img = new Image();
-        img.src = 'http://localhost:3000/api/images?filename=encenadaport&width=200&height=200';
-        
+    it ('creates new image with proper dims', async () => {
+        const new_image = await resizeImage('encenadaport', 200, 200);
+        // const img = new Image();
+        // console.log("hello");
+        // img.src = 'http://localhost:3000/api/images?filename=encenadaport&width=200&height=200';
+        // console.log(img.width);
+        // expect(img.width).toBe(200);
+        // expect(img.height).toBe(200);
     })
 })

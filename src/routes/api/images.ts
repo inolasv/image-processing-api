@@ -2,14 +2,17 @@ import express from "express";
 import sharp from "sharp";
 import {promises as fs} from 'fs';
 
+// create the images route
 const images = express.Router();
 
+// declare variables needed
 let width : number;
 let height : number;
-let filename : string;
+let filename : string | null;
 
-const resizeImage = (filename: string, width: number, height : number) : string => {
-    const new_filename = "assets/thumb/" + filename + "_thumb.jpg";
+// function for resizeing the image
+const resizeImage = async (filename: string, width: number, height : number) : Promise<string> => {
+    const new_filename = "./assets/thumb/" + filename + "_thumb.jpg";
     const old_filename = "assets/full/" + filename + ".jpg";
     sharp(old_filename).resize(width, height).toFile(new_filename, function(err) {
         // res.setHeader('Content-Type', 'image/jpg');
@@ -23,20 +26,19 @@ const resizeImage = (filename: string, width: number, height : number) : string 
     return new_filename;
 }
 
-images.get('/', (req, res) => {
+images.get('/', async (req, res) => {
     // res.send("image connected");
-    filename = req.query.filename as string;
+    filename = req.query.filename as string | null;
     width = Number(req.query.width);
     height = Number(req.query.height);
     
-    if (Number.isNaN(width) || Number.isNaN(height)) {
+    if (Number.isNaN(width) || Number.isNaN(height) || filename == null) {
         res.send("invalid arguments given");
     } else {
-        const new_filename = resizeImage(filename, width, height);
-        const new_src = `https://localhost:3000/api/images?filename=${filename}&width=${width}&height=${height}`
+        const new_filename = await resizeImage(filename, width, height);
+        const new_src = `http://localhost:3000/${new_filename.substring(8)}`;
         console.log("new src name: " + new_src);
         res.render('index', {
-            backgroundImage: new_filename, 
             src: new_src
         });
     }

@@ -29,13 +29,23 @@ describe("Server Test", () => {
         const response = yield request.get('/api/images?filename=encenadaport&width=Z00&height=200');
         expect(response.status).toBe(200);
     }));
-    it("routes to image with arguments", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("routes to image with valid arguments", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/api/images?filename=encenadaport&width=200&height=200');
         expect(response.status).toBe(200);
     }));
 });
 describe('Resize Image Test', () => {
-    it('creates new image', () => {
-        expect((0, images_1.resizeImage)('encenadaport', 200, 200)).toBe("assets/thumb/encenadaport_thumb.jpg");
-    });
+    it('creates new image', () => __awaiter(void 0, void 0, void 0, function* () {
+        const created_image = yield (0, images_1.resizeImage)('encenadaport', 200, 200);
+        expect(created_image).toBe("./assets/thumb/encenadaport_thumb.jpg");
+    }));
+    it('creates new image with proper dims', () => __awaiter(void 0, void 0, void 0, function* () {
+        const new_image = yield (0, images_1.resizeImage)('encenadaport', 200, 200);
+        // const img = new Image();
+        // console.log("hello");
+        // img.src = 'http://localhost:3000/api/images?filename=encenadaport&width=200&height=200';
+        // console.log(img.width);
+        // expect(img.width).toBe(200);
+        // expect(img.height).toBe(200);
+    }));
 });
