@@ -1,12 +1,14 @@
 {
+    "env": {
+        "jasmine": true
+     },
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": [ "prettier" ],
-    "extends": [ "prettier" ],
+    "extends": [ "prettier" , "eslint:recommended"],
     "rules": {
-        "semi": ["error", "always"],
-        "quotes": ["error", "double"],
+        // "semi": ["error", "always"],
+        // "quotes": ["error", "double"],
         "prettier/prettier": 2 // Means error
     }
-
   }

@@ -7,13 +7,13 @@ const express_1 = __importDefault(require("express"));
 const index_1 = __importDefault(require("./routes/index"));
 const app = (0, express_1.default)();
 const port = 3000;
-// set view engine as ejs 
+// set view engine as ejs
 app.set('view engine', 'ejs');
 app.use(express_1.default.static('assets'));
 // using main api route
 app.use('/api', index_1.default);
-// Starts the Express Server
+// Starts the Express Server at port 3000
 app.listen(port, () => {
-    console.log(`Server started at http://localhost:${port}`);
+    // console.log(`Server started at http://localhost:${port}`);
 });
 exports.default = app;

@@ -14,38 +14,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../index"));
-const images_1 = require("../routes/api/images");
+const resizeImage_1 = __importDefault(require("../utilities/resizeImage"));
+const validateInputs_1 = __importDefault(require("../utilities/validateInputs"));
 const request = (0, supertest_1.default)(index_1.default);
-describe("Server Test", () => {
-    it("routes to api", () => __awaiter(void 0, void 0, void 0, function* () {
+describe('Server Test', () => {
+    it('routes to api', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/api');
         expect(response.status).toBe(200);
     }));
-    it("routes to images", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('routes to images', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/api/images');
         expect(response.status).toBe(200);
     }));
-    it("routes to images with invalid arguments", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('routes to images with invalid arguments', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/api/images?filename=encenadaport&width=Z00&height=200');
         expect(response.status).toBe(200);
     }));
-    it("routes to image with valid arguments", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('routes to image with valid arguments', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/api/images?filename=encenadaport&width=200&height=200');
         expect(response.status).toBe(200);
     }));
 });
+describe('Validate Input Test', () => {
+    it('properly validates correct inputs', () => __awaiter(void 0, void 0, void 0, function* () {
+        const validation = yield (0, validateInputs_1.default)('encenadaport', 200, 200);
+        expect(validation).toBeTrue();
+    }));
+    it('catches non numbers', () => __awaiter(void 0, void 0, void 0, function* () {
+        const validation = yield (0, validateInputs_1.default)('encenadaport', Number('3ab'), 200);
+        expect(validation).toBeFalse();
+    }));
+    it('catches non integers', () => __awaiter(void 0, void 0, void 0, function* () {
+        const validation = yield (0, validateInputs_1.default)('encenadaport', 20.5, 200);
+        expect(validation).toBeFalse();
+    }));
+    it('catches non positive integers', () => __awaiter(void 0, void 0, void 0, function* () {
+        const validation = yield (0, validateInputs_1.default)('encenadaport', 200, -25);
+        expect(validation).toBeFalse();
+    }));
+    it('catches null images', () => __awaiter(void 0, void 0, void 0, function* () {
+        const validation = yield (0, validateInputs_1.default)(null, 200, -25);
+        expect(validation).toBeFalse();
+    }));
+    it('catches nonexistent  images', () => __awaiter(void 0, void 0, void 0, function* () {
+        const validation = yield (0, validateInputs_1.default)('doesNotExist', 200, -25);
+        expect(validation).toBeFalse();
+    }));
+});
 describe('Resize Image Test', () => {
     it('creates new image', () => __awaiter(void 0, void 0, void 0, function* () {
-        const created_image = yield (0, images_1.resizeImage)('encenadaport', 200, 200);
-        expect(created_image).toBe("./assets/thumb/encenadaport_thumb.jpg");
-    }));
-    it('creates new image with proper dims', () => __awaiter(void 0, void 0, void 0, function* () {
-        const new_image = yield (0, images_1.resizeImage)('encenadaport', 200, 200);
-        // const img = new Image();
-        // console.log("hello");
-        // img.src = 'http://localhost:3000/api/images?filename=encenadaport&width=200&height=200';
-        // console.log(img.width);
-        // expect(img.width).toBe(200);
-        // expect(img.height).toBe(200);
+        const created_image = yield (0, resizeImage_1.default)('encenadaport', 200, 200);
+        expect(created_image).toBe('./assets/thumb/encenadaport200x200_thumb.jpg');
     }));
 });

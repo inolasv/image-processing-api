@@ -8,7 +8,6 @@ routes.get('/', (req, res) => {
     res.send('main api route');
 });
 
-
 routes.use('/images', images);
 
 // exporting main route
