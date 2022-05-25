@@ -38,27 +38,27 @@ describe('Server Test', () => {
 describe('Validate Input Test', () => {
     it('properly validates correct inputs', () => __awaiter(void 0, void 0, void 0, function* () {
         const validation = yield (0, validateInputs_1.default)('encenadaport', 200, 200);
-        expect(validation).toBeTrue();
+        expect(validation).toBeNull();
     }));
     it('catches non numbers', () => __awaiter(void 0, void 0, void 0, function* () {
         const validation = yield (0, validateInputs_1.default)('encenadaport', Number('3ab'), 200);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: width is empty OR not a valid number');
     }));
     it('catches non integers', () => __awaiter(void 0, void 0, void 0, function* () {
         const validation = yield (0, validateInputs_1.default)('encenadaport', 20.5, 200);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: width is not a positive integer');
     }));
     it('catches non positive integers', () => __awaiter(void 0, void 0, void 0, function* () {
         const validation = yield (0, validateInputs_1.default)('encenadaport', 200, -25);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: height is not a positive integer');
     }));
     it('catches null images', () => __awaiter(void 0, void 0, void 0, function* () {
         const validation = yield (0, validateInputs_1.default)(null, 200, -25);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: filename is empty');
     }));
     it('catches nonexistent  images', () => __awaiter(void 0, void 0, void 0, function* () {
         const validation = yield (0, validateInputs_1.default)('doesNotExist', 200, -25);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: image does not exist');
     }));
 });
 describe('Resize Image Test', () => {

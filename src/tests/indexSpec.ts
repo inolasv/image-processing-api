@@ -30,7 +30,7 @@ describe('Server Test', () => {
 describe('Validate Input Test', () => {
     it('properly validates correct inputs', async () => {
         const validation = await validateInput('encenadaport', 200, 200);
-        expect(validation).toBeTrue();
+        expect(validation).toBeNull();
     });
     it('catches non numbers', async () => {
         const validation = await validateInput(
@@ -38,23 +38,23 @@ describe('Validate Input Test', () => {
             Number('3ab'),
             200
         );
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: width is empty OR not a valid number');
     });
     it('catches non integers', async () => {
         const validation = await validateInput('encenadaport', 20.5, 200);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: width is not a positive integer');
     });
     it('catches non positive integers', async () => {
         const validation = await validateInput('encenadaport', 200, -25);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: height is not a positive integer');
     });
     it('catches null images', async () => {
         const validation = await validateInput(null, 200, -25);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: filename is empty');
     });
     it('catches nonexistent  images', async () => {
         const validation = await validateInput('doesNotExist', 200, -25);
-        expect(validation).toBeFalse();
+        expect(validation).toBe('Error: image does not exist');
     });
 });
 

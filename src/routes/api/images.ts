@@ -15,16 +15,12 @@ const displayImage = async (
     res: express.Response,
     filename: string
 ): Promise<void> => {
-    try {
-        const new_filename = await resizeImage(filename, width, height);
-        const new_src = `http://localhost:3000/${new_filename.substring(8)}`;
-        // console.log('new src name: ' + new_src);
-        res.render('images', {
-            src: new_src,
-        });
-    } catch (error) {
-        res.send('Invalid file given');
-    }
+    const new_filename = await resizeImage(filename, width, height);
+    const new_src = `http://localhost:3000/${new_filename.substring(8)}`;
+    // console.log('new src name: ' + new_src);
+    res.render('images', {
+        src: new_src,
+    });
 };
 
 // routes to the file and handles the queries
@@ -36,10 +32,10 @@ images.get('/', async (req, res) => {
 
     // validate inputs
     const valid = await validateInput(filename, width, height);
-    if (valid) {
+    if (valid == null) {
         displayImage(res, filename as string);
     } else {
-        res.send('Invalid Input Given');
+        res.send(valid);
     }
 });
 
