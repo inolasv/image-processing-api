@@ -21,19 +21,22 @@ const displayImage = async (
 };
 
 // routes to the file and handles the queries
-images.get('/', async (req, res) => {
-    // res.send("image connected");
-    const filename: string | null = req.query.filename as string | null;
-    const width: number = Number(req.query.width);
-    const height: number = Number(req.query.height);
+images.get(
+    '/',
+    async (req: express.Request, res: express.Response): Promise<void> => {
+        // res.send("image connected");
+        const filename: string | null = req.query.filename as string | null;
+        const width: number = Number(req.query.width);
+        const height: number = Number(req.query.height);
 
-    // validate inputs
-    const valid = await validateInput(filename, width, height);
-    if (valid == null) {
-        displayImage(res, filename as string, width, height);
-    } else {
-        res.send(valid);
+        // validate inputs
+        const valid = await validateInput(filename, width, height);
+        if (valid == null) {
+            displayImage(res, filename as string, width, height);
+        } else {
+            res.send(valid);
+        }
     }
-});
+);
 
 export { images, resizeImage };

@@ -12,7 +12,7 @@ app.use(express.static('assets'));
 app.use('/api', routes);
 
 // Starts the Express Server at port 3000
-app.listen(port, () => {
+app.listen(port, (): void => {
     // console.log(`Server started at http://localhost:${port}`);
 });
 
